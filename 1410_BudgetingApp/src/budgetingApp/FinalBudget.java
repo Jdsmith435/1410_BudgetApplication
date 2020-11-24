@@ -33,14 +33,22 @@ public class FinalBudget {
 	/**
 	 * This method will return a list from the input file that was 
 	 * uploaded by the user. 
-	 * 
-	 * @param fileExpenses Tokens from input file when a created budget is imported
+	 * @param newExpenses List that contains the added in expenses 
+	 * @param fileExpenses List of Tokens from input file when a created budget is imported
 	 * @return
 	 */
-	public List<String> generateExpenses(String fileExpenses){
-		
+	public List<String> generateExpenses(List<String> fileExpense, List<Double> newExpenses){
+		List<String> allExpenses = new ArrayList<String>();
+		String expenseWithDollarSign = "$";
+
 		try {
-		
+			for(String s : fileExpense) {
+			allExpenses.add(s);	
+			}
+			for(Double d : newExpenses) {
+				String price = expenseWithDollarSign + Double.toString(d);
+				allExpenses.add(price);
+			}
 		} catch ( IllegalArgumentException ex){
 			System.err.println("Input needs to be a digit with a decimal value");
 		}
