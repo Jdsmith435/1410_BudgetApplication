@@ -6,6 +6,13 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+import java.awt.Font;
+import javax.swing.SwingConstants;
+import javax.swing.JButton;
+import java.awt.GridLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class BudgetingApp extends JFrame {
 
@@ -32,11 +39,26 @@ public class BudgetingApp extends JFrame {
 	 */
 	public BudgetingApp() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 700, 500);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
+		contentPane.setLayout(new GridLayout(3, 3, 0, 0));
+		
+		JLabel lblNewLabel = new JLabel("Welcome");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 22));
+		contentPane.add(lblNewLabel);
+		
+		JButton btnNewButton_1 = new JButton("Create New Budget");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		contentPane.add(btnNewButton_1);
+		
+		JButton btnNewButton = new JButton("Upload New Budget");
+		contentPane.add(btnNewButton);
 	}
-
 }
