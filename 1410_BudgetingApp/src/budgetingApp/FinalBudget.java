@@ -5,6 +5,7 @@ import java.util.List;
 
 public class FinalBudget {
 
+	//This might be a jframe also maybe ¯\_(ツ)_/¯ 
 	/**
 	 * This method is called when the budget is made initially
 	 * 

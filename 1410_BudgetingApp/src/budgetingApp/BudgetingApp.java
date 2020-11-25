@@ -50,15 +50,47 @@ public class BudgetingApp extends JFrame {
 		lblNewLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 22));
 		contentPane.add(lblNewLabel);
 		
+		JButton btnNewButton_1 = createBudgetButton();
+		contentPane.add(btnNewButton_1);
+		
+		JButton btnNewButton = uploadBudgetButton();
+		contentPane.add(btnNewButton);
+	}
+
+	/**
+	 * This method creates the upload button. The actionListener will create a new Jframe that will 
+	 * run the upload class.
+	 * @return
+	 */
+	private JButton uploadBudgetButton() {
+		JButton btnNewButton = new JButton("Upload New Budget");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				UploadBudget upload = new UploadBudget();
+				upload.setVisible(true);
+				
+			}
+		});
+		return btnNewButton;
+	}
+
+	
+	/**
+	 * This method creates the create button. The actionListener will create a new Jframe that will 
+	 * run the CreateBudget class.
+	 * @return
+	 */
+	private JButton createBudgetButton() {
 		JButton btnNewButton_1 = new JButton("Create New Budget");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				CreateBudget create = new CreateBudget();
+				create.setVisible(true);
+				
 			}
 		});
-		contentPane.add(btnNewButton_1);
-		
-		JButton btnNewButton = new JButton("Upload New Budget");
-		contentPane.add(btnNewButton);
+		return btnNewButton_1;
 	}
 }
