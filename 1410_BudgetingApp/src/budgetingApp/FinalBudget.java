@@ -4,6 +4,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * FinalBudget creates the format and returns a formated string.
+ * 
+ * Two generateExpenses methods return a List of type String to CreateBudget.
+ * CreateBudget sends a list of expenses of type double to generateExpenses and 
+ * UploadBudget will send two lists: a list of String with already generated expenses
+ * and a list of double of newly added expenses.
+ * 
+ * @author Jeremiah Smith Kenyon Gentry
+ *
+ */
 public class FinalBudget {
 
 	//Test Class
