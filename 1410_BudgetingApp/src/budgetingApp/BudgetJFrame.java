@@ -1,6 +1,5 @@
 package budgetingApp;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -19,20 +18,14 @@ import javax.swing.JFileChooser;
 
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.awt.event.ActionEvent;
 import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Desktop;
 
 public class BudgetJFrame extends JFrame implements ActionListener {
 
+	File f;
 	
 	JPanel panelCont = new JPanel();
 	JPanel panelMain = new JPanel();
@@ -69,9 +62,9 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 	
 	//Uploaded File Menu
 	JLabel uploadedFile = new JLabel(filePath);
-	JTextField addExpenses = new JTextField();
+	JTextField addExpenses = new JTextField("Enter new Expenses /n ex. 40.45");
 	JButton addUserExp = new JButton("Add");
-	
+	JButton exportAll = new JButton("Export");
 
 	//	Create Budget Menu (panelPlan1)
 	JLabel budget1Title = new JLabel("Create a Budget (p1)");
@@ -96,7 +89,6 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 
 
 	private JPanel contentPane;
-	private final JButton button = new JButton("New button");
 
 	/**
 	 * Launch the application.
@@ -126,7 +118,6 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 
-		//		contentPane = new JPanel();
 		panelCont.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(panelCont);
 		panelCont.setLayout(new CardLayout(0, 0));
@@ -145,7 +136,6 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 		panelMain.add(buttonMakeProfile);
 		panelMain.add(buttonUploadMenu);
 
-
 		//	Upload Menu		
 		panelUpload.setLayout(new GridLayout(3, 1, 0, 0));
 		uploadTitle.setHorizontalAlignment(SwingConstants.CENTER);
@@ -158,14 +148,8 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 		uploadedFile.setHorizontalAlignment(SwingConstants.CENTER);
 		panelUpFile.add(addExpenses);
 		panelUpFile.add(addUserExp);
+		panelUpFile.add(exportAll);
 		
-		
-		
-
-		//		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-		//		int result = fileChooser.showOpenDialog(this);
-
-
 		//	Create Budget Menu (panelPlan1)
 		panelPlan1.setLayout(new GridLayout(3, 1, 0, 0));
 		panelPlan1.add(budget1Title);
@@ -206,14 +190,9 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 		panelCont.add(panelOutPut, "5");
 		panelCont.add(panelUpFile, "6");
 		
-		panelUpFile.add(button);
 
 		//	Startup panel
 		cl.show(panelCont, "1");
-
-
-		//int result = fileChooser.showOpenDialog(this);
-
 
 		//	Button Action Listeners		
 		buttonMakeProfile.addActionListener(new ActionListener() {
@@ -227,11 +206,6 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				cl.show(panelCont, "2");
-				//				
-				//				if(e.getActionCommand().equals("Add File")) {
-				//				 JFileChooser chooser = new JFileChooser();
-				//		         File f = chooser.getSelectedFile();
-				//				}
 			}
 		});
 
@@ -247,11 +221,6 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				cl.show(panelCont, "2");
-				//				
-				//				if(e.getActionCommand().equals("Add File")) {
-				//				 JFileChooser chooser = new JFileChooser();
-				//		         File f = chooser.getSelectedFile();
-				//				}
 			}
 		});
 
@@ -310,41 +279,22 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 		addUserExp.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("Click");
-				System.out.println(addExpenses.getText());
+				
 				newExpenses.add(addUserExp.getText());
-				//newExpenses.forEach(x -> System.out.println(x));
+				addExpenses.setText("");
+			}
+		});
+		
+		exportAll.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				//File export with new Budget
+				ToFile tf = new ToFile();
+				tf.toFile(f, newExpenses);
 			}
 		});
 	}
-
-
-		
-		/*	
-			JButton btnNewButton_1 = new JButton("Create New Plan");
-			btnNewButton_1.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-				}
-			});
-			
-			JLabel lblNewLabel = new JLabel("Budgeting App");
-			panel.add(lblNewLabel);
-			lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-			panel.add(btnNewButton_1);
-			
-			
-			
-			JButton btnNewButton = new JButton("Upload File");
-			btnNewButton.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-			}
-			});
-			panel.add(btnNewButton);
-			
-			
-			
-			btnNewButton.addActionListener(this);
-			*/
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -352,15 +302,6 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 		if(e.getActionCommand().equals("Upload File")) {
 
 			cl.show(panelCont, "2");
-
-
-			//			CardLayout cl = new CardLayout(0,0);
-			//			JPanel panel = new JPanel();
-			//			contentPane.add(panel, "name_21198427104456");
-			//			panel.setLayout(new GridLayout(3, 1, 0, 0));
-			//			cl.show(getParent(), "cl");;
-
-
 		}
 	}
 
@@ -372,13 +313,9 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 		{  
 			JFileChooser chooser = new JFileChooser();
 			if (chooser.showOpenDialog(chooser) == JFileChooser.APPROVE_OPTION) {
-				File f = chooser.getSelectedFile();		//constructor of file class having file as argument 
+				f = chooser.getSelectedFile();		//constructor of file class having file as argument 
 				filePath = f.getAbsolutePath();
 				cl.show(panelCont, "6");
-				
-				//File export with new Budget
-				ToFile tf = new ToFile();
-				tf.toFile(f);
 			}
 		}
 		catch(Exception e)  
