@@ -280,7 +280,7 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				
-				newExpenses.add(addUserExp.getText());
+				newExpenses.add(addExpenses.getText());
 				addExpenses.setText("");
 			}
 		});
