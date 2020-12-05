@@ -23,6 +23,7 @@ import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.CardLayout;
 
+@SuppressWarnings("serial")
 public class BudgetJFrame extends JFrame implements ActionListener {
 
 	File f;
@@ -87,8 +88,6 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 	JFileChooser fileChooser = new JFileChooser();
 
 
-
-	private JPanel contentPane;
 
 	/**
 	 * Launch the application.
