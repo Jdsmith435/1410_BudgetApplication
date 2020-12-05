@@ -6,7 +6,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.GridLayout;
@@ -17,20 +19,43 @@ import javax.swing.JFileChooser;
 
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 import java.awt.event.ActionEvent;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Desktop;
 
 public class BudgetJFrame extends JFrame implements ActionListener {
 
+	
 	JPanel panelCont = new JPanel();
 	JPanel panelMain = new JPanel();
 	JPanel panelUpload = new JPanel();
 	JPanel panelPlan1 = new JPanel();
 	JPanel panelPlan2 = new JPanel();
 	JPanel panelOutPut = new JPanel();
-	
+	JPanel panelUpFile = new JPanel();
+
+	//File path for input file
 	String filePath;
+
+	//budget options
+	int necessary, savings, entertainment, debt; 
+	
+	//When user uploads file then adds new expenses
+	List<String> newExpenses = new ArrayList<String>();
+	
+	//budget options as percentages
+	double perNec;
+	double perSav;
+	double perEnt;
+	double perDebt;
 
 	//	Main Menu	
 	JLabel mainTitle = new JLabel("Budgeting App");
@@ -41,6 +66,12 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 	JLabel uploadTitle = new JLabel("Upload A Text File");
 	JButton buttonUploadB2Main = new JButton("Back to Main Menu");
 	JButton buttonUploadAddFile = new JButton("Add File");
+	
+	//Uploaded File Menu
+	JLabel uploadedFile = new JLabel(filePath);
+	JTextField addExpenses = new JTextField();
+	JButton addUserExp = new JButton("Add");
+	
 
 	//	Create Budget Menu (panelPlan1)
 	JLabel budget1Title = new JLabel("Create a Budget (p1)");
@@ -65,6 +96,7 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 
 
 	private JPanel contentPane;
+	private final JButton button = new JButton("New button");
 
 	/**
 	 * Launch the application.
@@ -120,6 +152,15 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 		panelUpload.add(uploadTitle);
 		panelUpload.add(buttonUploadB2Main);
 		panelUpload.add(buttonUploadAddFile);
+		
+		//Display Uploaded file
+		panelUpFile.setLayout(new GridLayout(3, 1, 0, 0));
+		uploadedFile.setHorizontalAlignment(SwingConstants.CENTER);
+		panelUpFile.add(addExpenses);
+		panelUpFile.add(addUserExp);
+		
+		
+		
 
 		//		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
 		//		int result = fileChooser.showOpenDialog(this);
@@ -150,8 +191,6 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 		panelPlan2.add(button2Back);
 		panelPlan2.add(button2Next);
 
-
-
 		// Budget Output (panelOutPut)	
 		panelOutPut.setLayout(new GridLayout(4, 1, 0, 0));
 		panelOutPut.add(outPutTitle);
@@ -165,14 +204,15 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 		panelCont.add(panelPlan1, "3");
 		panelCont.add(panelPlan2, "4");
 		panelCont.add(panelOutPut, "5");
-
-
+		panelCont.add(panelUpFile, "6");
+		
+		panelUpFile.add(button);
 
 		//	Startup panel
 		cl.show(panelCont, "1");
 
 
-		//		int result = fileChooser.showOpenDialog(this);
+		//int result = fileChooser.showOpenDialog(this);
 
 
 		//	Button Action Listeners		
@@ -221,14 +261,7 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 
-
-				//				JFileChooser fileChooser = new JFileChooser();
 				fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-				//				int result = fileChooser.showOpenDialog(this);
-				//				if (result == JFileChooser.APPROVE_OPTION) {
-				//				    File selectedFile = fileChooser.getSelectedFile();
-				//				    System.out.println("Selected file: " + selectedFile.getAbsolutePath());
-				//				}
 			}
 		});
 
@@ -274,37 +307,44 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 			}
 		});
 
+		addUserExp.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Click");
+				System.out.println(addExpenses.getText());
+				newExpenses.add(addUserExp.getText());
+				//newExpenses.forEach(x -> System.out.println(x));
+			}
+		});
 	}
 
 
-	//		
-	//		
-	//		
-	//		JButton btnNewButton_1 = new JButton("Create New Plan");
-	//		btnNewButton_1.addActionListener(new ActionListener() {
-	//			public void actionPerformed(ActionEvent e) {
-	//			}
-	//		});
-	//		
-	//		JLabel lblNewLabel = new JLabel("Budgeting App");
-	//		panel.add(lblNewLabel);
-	//		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-	//		panel.add(btnNewButton_1);
-	//		
-	//		
-	//		
-	//		JButton btnNewButton = new JButton("Upload File");
-	//		btnNewButton.addActionListener(new ActionListener() {
-	//			public void actionPerformed(ActionEvent e) {
-	//			}
-	//		});
-	//		panel.add(btnNewButton);
-	//		
-	//		
-	//		
-	//		btnNewButton.addActionListener(this);
-
-
+		
+		/*	
+			JButton btnNewButton_1 = new JButton("Create New Plan");
+			btnNewButton_1.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+				}
+			});
+			
+			JLabel lblNewLabel = new JLabel("Budgeting App");
+			panel.add(lblNewLabel);
+			lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+			panel.add(btnNewButton_1);
+			
+			
+			
+			JButton btnNewButton = new JButton("Upload File");
+			btnNewButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+			}
+			});
+			panel.add(btnNewButton);
+			
+			
+			
+			btnNewButton.addActionListener(this);
+			*/
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -324,24 +364,26 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 		}
 	}
 
+	/**
+	 * Opens file chooser and creates a stream for that file in the system
+	 */
 	public void selectFile() {
-		JFileChooser chooser = new JFileChooser();
-		try{
-
-			if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-				File f = chooser.getSelectedFile();
-				this.filePath = f.getAbsolutePath();
+		try  
+		{  
+			JFileChooser chooser = new JFileChooser();
+			if (chooser.showOpenDialog(chooser) == JFileChooser.APPROVE_OPTION) {
+				File f = chooser.getSelectedFile();		//constructor of file class having file as argument 
+				filePath = f.getAbsolutePath();
+				cl.show(panelCont, "6");
 				
-				if(filePath.contains(".csv")) {
-				//Just working on a file check system
-				}
+				//File export with new Budget
+				ToFile tf = new ToFile();
+				tf.toFile(f);
 			}
-			else {
-
-			}
-		}catch ( IllegalArgumentException ex) {
-			System.err.println("File type must be a .csv file");
 		}
-
+		catch(Exception e)  
+		{  
+			e.printStackTrace();  
+		}  
 	}
 }
