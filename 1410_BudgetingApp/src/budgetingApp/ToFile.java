@@ -41,7 +41,7 @@ public class ToFile {
 		
 	}
 	
-public void toFile( List<String> newExpenses, List<String> types) {
+public void toFileNew(List<Double> percentIncome, List<String> newExpenses, List<String> types, int plan) {
 		
 		try {
 			FileWriter csvWriter = new FileWriter("budget.csv");
@@ -50,9 +50,38 @@ public void toFile( List<String> newExpenses, List<String> types) {
 			
 			int i = 0;
 			
+			csvWriter.write("Budget: ");
+			if (plan == 1) {
+				csvWriter.write("50/30/20");
+			} else if (plan == 2) {
+				csvWriter.write("50/40/5/5");
+			}else {
+				csvWriter.write("40/55/5");
+			}
+			int a = 0;
+			//Formatting of the file
+			csvWriter.write(System.getProperty( "line.separator" ));
+			csvWriter.write("Monthly Income: " + BudgetJFrame.income);
+			csvWriter.write(System.getProperty( "line.separator" ));
+			csvWriter.write("Necessary: " + percentIncome.get(a));
+			csvWriter.write(System.getProperty( "line.separator" ));
+			a++;
+			if(plan ==2) {
+				csvWriter.write("Debt: " + percentIncome.get(a));
+				csvWriter.write(System.getProperty( "line.separator" ));
+				a++;
+			}
+			csvWriter.write("Savings: " + percentIncome.get(a));	
+			csvWriter.write(System.getProperty( "line.separator" ));
+			a++;
+			csvWriter.write("Entertainment: " + percentIncome.get(a));	
+			csvWriter.write(System.getProperty( "line.separator" ));
+			csvWriter.write("Expenses: ");	
+
+			
 			for(String d : data) {
 				csvWriter.write(System.getProperty( "line.separator" ));
-				csvWriter.write(d);
+				csvWriter.write(d + " ");
 				csvWriter.write(types.get(i));
 				i++;
 			}

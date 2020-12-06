@@ -29,6 +29,10 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 	File f;
 
 	int counter;
+	int plan; 
+	
+	ToFile tf = new ToFile();
+	
 
 	JPanel panelCont = new JPanel();
 	JPanel panelMain = new JPanel();
@@ -43,11 +47,20 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 	String filePath;
 
 	//budget options
-	int income, necessary, savings, entertainment, debt; 
+	static int income;
+
+	int necessary;
+
+	int savings;
+
+	int entertainment;
+
+	int debt; 
 
 	//When user uploads file then adds new expenses
 	List<String> newExpenses = new ArrayList<String>();
 	List<String> expTypes = new ArrayList<String>();
+	List<Double> percentIncome = new ArrayList<Double>();
 
 
 	//	Main Menu	
@@ -84,8 +97,8 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 	JButton buttonOutPutBack = new JButton("Back");
 	JButton buttonExportOutPut = new JButton("Export");
 	
-	//Expenses and Catagories
-	JLabel expTitle = new JLabel("Enter Expenses and select a catagory");
+	//Expenses and Categories
+	JLabel expTitle = new JLabel("Enter Expenses and select type");
 	JButton expAdd = new JButton("Add");
 	JTextField expText = new JTextField();
 	JButton expExport = new JButton("Export");
@@ -173,6 +186,10 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 		JRadioButton housing = new JRadioButton ("Housing");
 		JRadioButton bills = new JRadioButton ("bills");
 		JRadioButton food = new JRadioButton ("food");
+		ButtonGroup radioExp = new ButtonGroup();
+		radioExp.add(housing);
+		radioExp.add(bills);
+		radioExp.add(food);
 		panelExpenses.add(housing);
 		panelExpenses.add(bills);
 		panelExpenses.add(food);
@@ -269,11 +286,14 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 			public void actionPerformed(ActionEvent arg0) {
 				cl.show(panelCont, "4");
 				if(option1.isSelected()==true) {
-					Budget1.catagoryPercentage(income);
+					percentIncome = Budget1.catagoryPercentage(income);
+					plan=1;
 				}else if(option2.isSelected() == true) {
-					Budget2.catagoryPercentage(income);
+					percentIncome = Budget2.catagoryPercentage(income);
+					plan=2;
 				}else {
-					Budget3.catagoryPercentage(income);
+					percentIncome = Budget3.catagoryPercentage(income);
+					plan=3;
 				}
 			}
 		});
@@ -320,7 +340,7 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 			public void actionPerformed(ActionEvent arg0) {
 
 				//File export with new Budget
-				ToFile tf = new ToFile();
+		
 				tf.toFile(f, newExpenses);
 				addExpenses.setText("Exported!");
 			}
@@ -356,10 +376,19 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 				if(housing.isSelected() == true) {
 					expTypes.add("Housing");
 				} else if(food.isSelected() == true) {
-					expTypes.add("Foods");
+					expTypes.add("Food");
 				}else {
 					expTypes.add("Bills");
 				}
+			}
+
+		});
+		
+		expExport.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				tf.toFileNew(percentIncome, newExpenses, expTypes, plan);
+				expText.setText("Exported!");
 			}
 
 		});
