@@ -13,12 +13,12 @@ import java.util.List;
  */
 public class Budget2 extends BudgetOptions {
 	
-	public Budget2(double savings, double spending, double necessity) {
-		super(savings, spending, necessity);
+	public Budget2(double income, double debt) {
+		super(income, debt);
 		// TODO Auto-generated constructor stub
 	}
 	
-	public List<Double> catagoryPercentage(double income)
+	public static List<Double> catagoryPercentage(double income)
 	{
 		double necessityQT = income * .50;
 		double debtQT = income * .40;

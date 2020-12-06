@@ -41,6 +41,29 @@ public class ToFile {
 		
 	}
 	
+public void toFile( List<String> newExpenses, List<String> types) {
+		
+		try {
+			FileWriter csvWriter = new FileWriter("budget.csv");
+			
+			List<String> data = new ArrayList<String>(FinalBudget.generateExpenses(newExpenses));
+			
+			int i = 0;
+			
+			for(String d : data) {
+				csvWriter.write(System.getProperty( "line.separator" ));
+				csvWriter.write(d);
+				csvWriter.write(types.get(i));
+				i++;
+			}
+			csvWriter.close();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 	
 
 }

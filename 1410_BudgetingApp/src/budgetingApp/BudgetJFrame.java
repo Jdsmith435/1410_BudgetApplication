@@ -27,7 +27,9 @@ import java.awt.CardLayout;
 public class BudgetJFrame extends JFrame implements ActionListener {
 
 	File f;
-	
+
+	int counter;
+
 	JPanel panelCont = new JPanel();
 	JPanel panelMain = new JPanel();
 	JPanel panelUpload = new JPanel();
@@ -35,21 +37,18 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 	JPanel panelPlan2 = new JPanel();
 	JPanel panelOutPut = new JPanel();
 	JPanel panelUpFile = new JPanel();
+	JPanel panelExpenses = new JPanel();
 
 	//File path for input file
 	String filePath;
 
 	//budget options
-	int necessary, savings, entertainment, debt; 
-	
+	int income, necessary, savings, entertainment, debt; 
+
 	//When user uploads file then adds new expenses
 	List<String> newExpenses = new ArrayList<String>();
-	
-	//budget options as percentages
-	double perNec;
-	double perSav;
-	double perEnt;
-	double perDebt;
+	List<String> expTypes = new ArrayList<String>();
+
 
 	//	Main Menu	
 	JLabel mainTitle = new JLabel("Budgeting App");
@@ -60,7 +59,7 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 	JLabel uploadTitle = new JLabel("Upload A Text File");
 	JButton buttonUploadB2Main = new JButton("Back to Main Menu");
 	JButton buttonUploadAddFile = new JButton("Add File");
-	
+
 	//Uploaded File Menu
 	JLabel uploadedFile = new JLabel(filePath);
 	JTextField addExpenses = new JTextField("Enter new Expenses /n ex. 40.45");
@@ -68,7 +67,6 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 	JButton exportAll = new JButton("Export");
 
 	//	Create Budget Menu (panelPlan1)
-	JLabel budget1Title = new JLabel("Create a Budget (p1)");
 	JButton button1Back2Main = new JButton("Back to Main Menu");
 	JButton button1Next = new JButton("Next");
 
@@ -76,12 +74,21 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 	JLabel budget2Title = new JLabel("Budget Categorization (p2)");
 	JButton button2Back = new JButton("Back");
 	JButton button2Next = new JButton("Next");
+	JButton addInput = new JButton("Add");
+	JTextField textInput = new JTextField();
+	JLabel instructions = new JLabel();
 
 	// Budget Output (panelOutPut)	
 	JLabel outPutTitle = new JLabel("Budget OutPut");
 	JButton buttonOutPutRtnMain = new JButton("Return to Main Menu");
 	JButton buttonOutPutBack = new JButton("Back");
 	JButton buttonExportOutPut = new JButton("Export");
+	
+	//Expenses and Catagories
+	JLabel expTitle = new JLabel("Enter Expenses and select a catagory");
+	JButton expAdd = new JButton("Add");
+	JTextField expText = new JTextField();
+	JButton expExport = new JButton("Export");
 
 	CardLayout cl = new CardLayout();
 
@@ -141,20 +148,36 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 		panelUpload.add(uploadTitle);
 		panelUpload.add(buttonUploadB2Main);
 		panelUpload.add(buttonUploadAddFile);
-		
+
 		//Display Uploaded file
 		panelUpFile.setLayout(new GridLayout(3, 1, 0, 0));
 		uploadedFile.setHorizontalAlignment(SwingConstants.CENTER);
 		panelUpFile.add(addExpenses);
 		panelUpFile.add(addUserExp);
 		panelUpFile.add(exportAll);
-		
+
 		//	Create Budget Menu (panelPlan1)
-		panelPlan1.setLayout(new GridLayout(3, 1, 0, 0));
-		panelPlan1.add(budget1Title);
+		panelPlan1.setLayout(new GridLayout(6, 1, 0, 0));
+		panelPlan1.add(instructions);
+		panelPlan1.add(textInput);
+		panelPlan1.add(addInput);
 		panelPlan1.add(button1Back2Main);
 		panelPlan1.add(button1Next);
+		
+		// Add expenses menu
+		panelExpenses.setLayout(new GridLayout(6,2,0,0));
+		panelExpenses.add(expTitle);
+		panelExpenses.add(expText);
+		panelExpenses.add(expAdd);
+		panelExpenses.add(expExport);
+		JRadioButton housing = new JRadioButton ("Housing");
+		JRadioButton bills = new JRadioButton ("bills");
+		JRadioButton food = new JRadioButton ("food");
+		panelExpenses.add(housing);
+		panelExpenses.add(bills);
+		panelExpenses.add(food);
 
+		// Profile Buttons
 		JRadioButton option1 = new JRadioButton ("Profile 1");
 		JRadioButton option2 = new JRadioButton ("Profile 2");
 		JRadioButton option3 = new JRadioButton ("Profile 3");
@@ -185,10 +208,10 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 		panelCont.add(panelMain, "1");
 		panelCont.add(panelUpload, "2");
 		panelCont.add(panelPlan1, "3");
-		panelCont.add(panelPlan2, "4");
+		panelCont.add(panelExpenses, "4");
 		panelCont.add(panelOutPut, "5");
 		panelCont.add(panelUpFile, "6");
-		
+
 
 		//	Startup panel
 		cl.show(panelCont, "1");
@@ -198,6 +221,7 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				cl.show(panelCont, "3");
+				instructions.setText("Enter Income");
 			}
 		});
 
@@ -244,6 +268,13 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				cl.show(panelCont, "4");
+				if(option1.isSelected()==true) {
+					Budget1.catagoryPercentage(income);
+				}else if(option2.isSelected() == true) {
+					Budget2.catagoryPercentage(income);
+				}else {
+					Budget3.catagoryPercentage(income);
+				}
 			}
 		});
 
@@ -278,20 +309,59 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 		addUserExp.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
+
 				newExpenses.add(addExpenses.getText());
 				addExpenses.setText("");
 			}
 		});
-		
+
 		exportAll.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
+
 				//File export with new Budget
 				ToFile tf = new ToFile();
 				tf.toFile(f, newExpenses);
+				addExpenses.setText("Exported!");
 			}
+		});
+
+		addInput.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+
+				if (counter == 0) {
+					income = Integer.parseInt(textInput.getText());
+					counter ++;
+					instructions.setText("Enter Debt");
+					textInput.setText("");
+					instructions.paintImmediately(instructions.getVisibleRect());
+				}else if(counter == 1) {
+					debt = Integer.parseInt(textInput.getText());
+					counter ++;
+					instructions.setText("Select a Plan and Click Next");
+					instructions.paintImmediately(instructions.getVisibleRect());
+					textInput.setText("");
+				}
+			}
+
+		});
+		
+		expAdd.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				newExpenses.add(expText.getText());
+				expText.setText("");
+				
+				if(housing.isSelected() == true) {
+					expTypes.add("Housing");
+				} else if(food.isSelected() == true) {
+					expTypes.add("Foods");
+				}else {
+					expTypes.add("Bills");
+				}
+			}
+
 		});
 	}
 

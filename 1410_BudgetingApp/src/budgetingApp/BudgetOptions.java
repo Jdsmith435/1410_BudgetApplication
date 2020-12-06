@@ -8,39 +8,28 @@ import java.util.List;
 public abstract class BudgetOptions {
 
 	//double amounts that represent the percentage of income towards this catagory
-	private double savings;
-	private double spending;
-	private double necessity;
+	private double income;
+	private double debt;
 
 	
-	public BudgetOptions (double savings, double spending, double necessity) {
-		this.savings = savings;
-		this.spending = spending;
-		this.necessity = necessity;
+	public BudgetOptions (double income, double debt) {
+		this.income = income;
+		this.debt = debt;
 	}
 
 
 	/**
 	 * @return the savings
 	 */
-	public double getSavings() {
-		return savings;
+	public double getDebt() {
+		return debt;
 	}
-
-
+	
 	/**
-	 * @return the spending
+	 * @return the savings
 	 */
-	public double getSpending() {
-		return spending;
-	}
-
-
-	/**
-	 * @return the necessity
-	 */
-	public double getNecessity() {
-		return necessity;
+	public double getIncome() {
+		return income;
 	}
 	
 	public List<Double> catagoryPercentage;
