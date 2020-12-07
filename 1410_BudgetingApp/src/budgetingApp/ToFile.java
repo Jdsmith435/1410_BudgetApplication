@@ -7,8 +7,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Exports all data pertaining to the budget to a csv file
+ * Two methods to handle different an uploaded budget or a new budget
+ * 
+ * @author Jeremiah Kenyon
+ *
+ */
 public class ToFile {
 	
+	/**
+	 * From a file, exports a new budget with the new expenses added by the user
+	 * @param f
+	 * @param newExpenses
+	 */
 	public void toFile(File f, List<String> newExpenses) {
 		
 		try {
@@ -41,6 +53,14 @@ public class ToFile {
 		
 	}
 	
+/**
+ * Exports to a new csv file the budget that was created by the user
+ * 
+ * @param percentIncome
+ * @param newExpenses
+ * @param types
+ * @param plan
+ */
 public void toFileNew(List<Double> percentIncome, List<String> newExpenses, List<String> types, int plan) {
 		
 		try {

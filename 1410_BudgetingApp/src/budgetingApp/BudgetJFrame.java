@@ -23,6 +23,10 @@ import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.CardLayout;
 
+/**
+ *Creates the JFrame with prompts to guide the user in creating or uploading a budget.
+ *
+ */
 @SuppressWarnings("serial")
 public class BudgetJFrame extends JFrame implements ActionListener {
 
@@ -48,13 +52,6 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 
 	//budget options
 	static int income;
-
-	int necessary;
-
-	int savings;
-
-	int entertainment;
-
 	int debt; 
 
 	//When user uploads file then adds new expenses
@@ -127,6 +124,9 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 
 	/**
 	 * Create the frame.
+	 * 
+	 * Each frame is added to its own panel that is created in the field area. 
+	 * The panel is then sent to a generic card
 	 */
 	public BudgetJFrame() {
 
@@ -281,6 +281,8 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 			}
 		});
 
+		// Decides how to divide the income based on the plan
+		// the user wants.
 		button1Next.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -326,6 +328,7 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 			}
 		});
 
+		//In upload, the user can add new expenses
 		addUserExp.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -335,17 +338,19 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 			}
 		});
 
+		//Exports the uploaded budget into a new csv file
 		exportAll.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 
 				//File export with new Budget
-		
 				tf.toFile(f, newExpenses);
 				addExpenses.setText("Exported!");
 			}
 		});
 
+		//when creating a budget, the user will be prompted to
+		//enter income and then debt. 
 		addInput.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -367,6 +372,7 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 
 		});
 		
+		//Adds expenses to the initial budget 
 		expAdd.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -384,6 +390,7 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 
 		});
 		
+		//Exports the new budget
 		expExport.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -411,7 +418,7 @@ public class BudgetJFrame extends JFrame implements ActionListener {
 		{  
 			JFileChooser chooser = new JFileChooser();
 			if (chooser.showOpenDialog(chooser) == JFileChooser.APPROVE_OPTION) {
-				f = chooser.getSelectedFile();		//constructor of file class having file as argument 
+				this.f = chooser.getSelectedFile();		//constructor of file class having file as argument 
 				filePath = f.getAbsolutePath();
 				cl.show(panelCont, "6");
 			}
